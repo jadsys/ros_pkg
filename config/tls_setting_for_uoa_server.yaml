@@ -1,0 +1,13 @@
+#################################################################################################
+# File              : tls_setting_for_uoa_server.yaml
+# Last Update Date  : 2022/03/11
+# Last Author       : M.Tsunematsu
+#################################################################################################
+tls:
+  ca_certs: /home/ros/catkin_ws/src/mqtt_bridge/keyfile/inov_ca.crt
+  certfile: /home/ros/catkin_ws/src/mqtt_bridge/keyfile/jadsys.crt
+  keyfile: /home/ros/catkin_ws/src/mqtt_bridge/keyfile/jadsys.key
+#  ca_certs: /home/gidrobo4/catkin_ws/src/mqtt_bridge/keyfile/inov_ca.crt
+#  certfile: /home/gidrobo4/catkin_ws/src/mqtt_bridge/keyfile/jadsys.crt
+#  keyfile: /home/gidrobo4/catkin_ws/src/mqtt_bridge/keyfile/jadsys.key
+  tls_insecure: true

@@ -1,0 +1,99 @@
+<launch>
+  <arg name="use_tls" default="true" />
+  <!-- <arg name="MQTT_HOST" default="$(optenv MQTT_HOST 192.168.1.213)"/> -->
+  <arg name="MQTT_HOST" default="$(optenv MQTT_HOST mosqbrk1.lictia.jp)"/>
+  <arg name="MQTT_PORT" default="$(optenv MQTT_PORT 47081)"/>
+  <arg name="MQTT_USE_TLS" default="$(optenv MQTT_USE_TLS true)"/>
+  <arg name="MQTT_CONSUMER_USERNAME" default="$(optenv MQTT_CONSUMER_USERNAME ANONYMOUS)"/>
+  <arg name="MQTT_CONSUMER_PASSWORD" default="$(optenv MQTT_CONSUMER_PASSWORD )"/>
+  <arg name="MQTT_CONSUMER_QUEUE" default="$(optenv MQTT_CONSUMER_QUEUE cmd/planner/NaviRequest)"/>
+  <arg name="MQTT_CONSUMER_CLIENT_ID" default="$(optenv MQTT_CONSUMER_CLIENT_ID robot12)"/>
+  <arg name="MQTT_CONSUMER_CLEAN_SESSION" default="$(optenv MQTT_CONSUMER_CLEAN_SESSION true)"/>
+  <arg name="MQTT_CONSUMER_USER_DATA" default="$(optenv MQTT_CONSUMER_USER_DATA )"/>
+  <arg name="MQTT_CONSUMER_PROTOCOL" default="$(optenv MQTT_CONSUMER_PROTOCOL 4)"/>
+  <arg name="MQTT_CONSUMER_TRANSPORT" default="$(optenv MQTT_CONSUMER_TRANSPORT tcp)"/>
+  <arg name="MQTT_CONSUMER_KEEPALIVE" default="$(optenv MQTT_CONSUMER_KEEPALIVE 60)"/>
+  <arg name="MQTT_CONSUMER_BINDADDRESS" default="$(optenv MQTT_CONSUMER_BINDADDRESS )"/>
+  <arg name="MQTT_CONSUMER_QOS" default="$(optenv MQTT_CONSUMER_QOS 0)"/>
+  <arg name="MQTT_PRODUCER_USERNAME" default="$(optenv MQTT_PRODUCER_USERNAME ANONYMOUS)"/>
+  <arg name="MQTT_PRODUCER_PASSWORD" default="$(optenv MQTT_PRODUCER_PASSWORD )"/>
+  <arg name="MQTT_PRODUCER_QUEUE" default="$(optenv MQTT_PRODUCER_QUEUE robot_project/jad4lict23k/test)"/>
+  <arg name="MQTT_PRODUCER_CLIENT_ID" default="$(optenv MQTT_CONSUMER_CLIENT_ID robot22)"/>
+  <arg name="MQTT_PRODUCER_CLEAN_SESSION" default="$(optenv MQTT_CONSUMER_CLEAN_SESSION true)"/>
+  <arg name="MQTT_PRODUCER_USER_DATA" default="$(optenv MQTT_CONSUMER_USER_DATA )"/>
+  <arg name="MQTT_PRODUCER_PROTOCOL" default="$(optenv MQTT_CONSUMER_PROTOCOL 4)"/>
+  <arg name="MQTT_PRODUCER_TRANSPORT" default="$(optenv MQTT_CONSUMER_TRANSPORT tcp)"/>
+  <arg name="MQTT_PRODUCER_KEEPALIVE" default="$(optenv MQTT_CONSUMER_KEEPALIVE 60)"/>
+  <arg name="MQTT_PRODUCER_BINDADDRESS" default="$(optenv MQTT_CONSUMER_BINDADDRESS )"/>
+  <arg name="MQTT_PRODUCER_QOS" default="$(optenv MQTT_CONSUMER_QOS 0)"/>
+  <arg name="ENTITY_TYPE" default="$(optenv ENTITY_TYPE megarover)"/>
+  <arg name="ENTITY_ID" default="$(optenv ENTITY_ID megarover_02_sim)"/>
+  <arg name="NAVI_CMD_NAME" default="$(optenv NAVI_CMD_NAME naviCmd)"/>
+  <arg name="EMG_CMD_NAME" default="$(optenv EMG_CMD_NAME stopCmd)"/>
+  <arg name="NAVI_CMD_TOPIC" default="$(optenv NAVI_CMD_TOPIC /robot_bridge/megarover_02_sim/navi_cmd)"/>
+  <arg name="NAVI_CMDEXE_TOPIC" default="$(optenv NAVI_CMDEXE_TOPIC /robot_bridge/megarover_02_sim/navi_cmdexe)"/>
+  <arg name="EMG_CMD_TOPIC" default="$(optenv EMG_CMD_TOPIC /robot_bridge/emg)"/>
+  <arg name="EMG_CMDEXE_TOPIC" default="$(optenv EMG_CMDEXE_TOPIC /robot_bridge/emgexe)"/>
+  <arg name="ROBOT_STATE_TOPIC" default="$(optenv ROBOT_STATE_TOPIC /robot_bridge/state)"/>
+  <arg name="ROBOT_INFO_TOPIC" default="$(optenv ROBOT_INFO_TOPIC /robot_bridge/robo_info)"/>
+  <arg name="SEND_DELTA_MILLISEC" default="1000"/>
+  
+  <group ns="$(arg ENTITY_ID)">
+    <node name="jad_consumer" pkg="ros_pkg" type="jad_consumer.py" output="screen">
+      <rosparam command="delete" param=""/>
+      <rosparam if="$(arg use_tls)" command="load" ns="mqtt" file="$(find ros_pkg)/config/tls_setting_for_uoa_server.yaml" />
+      <param name="mqtt/host" value="$(arg MQTT_HOST)"/>
+      <param name="mqtt/port" value="$(arg MQTT_PORT)"/>
+      <param name="mqtt/use_tls" value="$(arg MQTT_USE_TLS)"/>
+      <param name="mqtt/username" value="$(arg MQTT_CONSUMER_USERNAME)"/>
+      <param name="mqtt/password" value="$(arg MQTT_CONSUMER_PASSWORD)"/>
+      <param name="mqtt/queue" value="$(arg MQTT_CONSUMER_QUEUE)"/>
+      <param name="mqtt/client_id" value="$(arg MQTT_CONSUMER_CLIENT_ID)"/>
+      <param name="mqtt/clean_session" value="$(arg MQTT_CONSUMER_CLEAN_SESSION)"/>
+      <param name="mqtt/user_data" value="$(arg MQTT_CONSUMER_USER_DATA)"/>
+      <param name="mqtt/protocol" value="$(arg MQTT_CONSUMER_PROTOCOL)"/>
+      <param name="mqtt/transport" value="$(arg MQTT_CONSUMER_TRANSPORT)"/>
+      <param name="mqtt/keepalive" value="$(arg MQTT_CONSUMER_KEEPALIVE)"/>
+      <param name="mqtt/bind_address" value="$(arg MQTT_CONSUMER_BINDADDRESS)"/>
+      <param name="mqtt/qos" value="$(arg MQTT_CONSUMER_QOS)"/>
+      <param name="rb/entity_type" value="$(arg ENTITY_TYPE)"/>
+      <param name="rb/entity_id" value="$(arg ENTITY_ID)"/>
+      <param name="rb/navi_cmd_name" value="$(arg NAVI_CMD_NAME)"/>
+      <param name="rb/emg_cmd_name" value="$(arg EMG_CMD_NAME)"/>
+      <param name="topic/navi_cmd" value="$(arg NAVI_CMD_TOPIC)"/>
+      <param name="topic/emg_cmd" value="$(arg EMG_CMD_TOPIC)"/>
+      <param name="topic/navi_cmdexe" value="$(arg NAVI_CMDEXE_TOPIC)"/>
+      <param name="topic/state" value="$(arg ROBOT_STATE_TOPIC)"/>
+      <param name="topic/info" value="$(arg ROBOT_INFO_TOPIC)"/>
+    </node>
+  </group>
+
+  <group ns="$(arg ENTITY_ID)">
+    <node name="jad_producer" pkg="ros_pkg" type="jad_producer.py" output="screen">
+      <!-- <rosparam command="delete" param=""/> -->
+      <rosparam if="$(arg use_tls)" command="load" ns="mqtt" file="$(find ros_pkg)/config/tls_setting_for_uoa_server.yaml" />
+      <param name="mqtt/host" value="$(arg MQTT_HOST)"/>
+      <param name="mqtt/port" value="$(arg MQTT_PORT)"/>
+      <param name="mqtt/use_tls" value="$(arg MQTT_USE_TLS)"/>
+      <param name="mqtt/username" value="$(arg MQTT_PRODUCER_USERNAME)"/>
+      <param name="mqtt/password" value="$(arg MQTT_PRODUCER_PASSWORD)"/>
+      <param name="mqtt/queue" value="$(arg MQTT_PRODUCER_QUEUE)"/>
+      <param name="mqtt/client_id" value="$(arg MQTT_PRODUCER_CLIENT_ID)"/>
+      <param name="mqtt/clean_session" value="$(arg MQTT_PRODUCER_CLEAN_SESSION)"/>
+      <param name="mqtt/user_data" value="$(arg MQTT_PRODUCER_USER_DATA)"/>
+      <param name="mqtt/protocol" value="$(arg MQTT_PRODUCER_PROTOCOL)"/>
+      <param name="mqtt/transport" value="$(arg MQTT_PRODUCER_TRANSPORT)"/>
+      <param name="mqtt/keepalive" value="$(arg MQTT_PRODUCER_KEEPALIVE)"/>
+      <param name="mqtt/bind_address" value="$(arg MQTT_PRODUCER_BINDADDRESS)"/>
+      <param name="rb/entity_type" value="$(arg ENTITY_TYPE)"/>
+      <param name="rb/entity_id" value="$(arg ENTITY_ID)"/>
+      <param name="rb/navi_cmd_name" value="$(arg NAVI_CMD_NAME)"/>
+      <param name="rb/emg_cmd_name" value="$(arg EMG_CMD_NAME)"/>
+      <param name="topic/state" value="$(arg ROBOT_STATE_TOPIC)"/>
+      <param name="topic/info" value="$(arg ROBOT_INFO_TOPIC)"/>
+      <param name="topic/navi_cmdexe" value="$(arg NAVI_CMDEXE_TOPIC)"/>
+      <param name="topic/emg_cmdexe" value="$(arg EMG_CMDEXE_TOPIC)"/>
+      <param name="thresholds/send_delta_ms" value="$(arg SEND_DELTA_MILLISEC)"/>
+    </node>
+  </group>
+ </launch>
